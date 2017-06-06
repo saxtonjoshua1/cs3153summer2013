@@ -1,0 +1,46 @@
+<HTML>
+<TITLE> JLJ Associates - Auctioning unleashed! - Register </TITLE>
+
+
+//this code is used for viewing all auctions....we will need to figure out how to merge the winner with this auction information!
+
+
+
+
+
+<HEAD> <h1> Available Auctions</h1> </HEAD>
+       <hr size="10" noshade="shade">
+    
+    
+    <body>
+		
+	<?php 
+	
+	include('projectconnect.php');
+	
+	
+	
+   $res=pg_query("SELECT * from Auction;");
+   echo('<TABLE border="2">'."\n");
+   for($i=0; $i<pg_numrows($res);++$i) {
+		$obj=pg_fetch_object($res,$i);
+		echo "<tr>     <TD> Auction Number: </TD>   <Td>   $obj->auctionid   </TD>   
+		               <TD> Item:           </TD>   <TD>   $obj->item        </TD> 
+		               <TD> Description:    </TD>   <TD>   $obj->description </TD>
+		               <TD> Start Time:     </TD>   <TD>   $obj->starttime   </TD> 
+		               <TD> End Time:       </TD>   <TD>   $obj->endtime     </TD> 
+		               <TD> Category:       </TD>   <TD>   $obj->belongsto   </TD>                 
+		     </tr>";
+	}
+	echo "</TABLE>\n";
+	
+	
+		
+	?>	
+		
+		
+   </body>
+   
+   
+   
+</html>

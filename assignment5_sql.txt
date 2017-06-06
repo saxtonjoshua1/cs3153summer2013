@@ -1,0 +1,79 @@
+James Pyle Assignment 5 
+
+1)
+
+SELECT Id,Name
+FROM Product
+WHERE CategoryId=2;
+
+
+2)
+
+SELECT P.id,P.name
+FROM product P, category C
+WHERE C.id=P.categoryid AND
+C.name='Books';
+
+3)
+
+SELECT COUNT(*)
+FROM store;
+
+
+4)
+               
+SELECT S.id AS "STORE" ,COUNT(*) AS "TOTAL RECEIPTS"
+FROM receipt R LEFT OUTER JOIN store S ON
+R.storeid=S.id
+GROUP BY S.id;
+
+
+
+5)
+
+
+Select C.name, COUNT(P.price)
+FROM category C LEFT OUTER JOIN product P
+ON C.id = P.categoryid AND
+P.price BETWEEN 20 AND 30  
+GROUP BY C.name;
+
+
+
+
+6)
+
+
+CREATE VIEW CATVIEW AS 
+SELECT  C.id,C.name, COUNT(P.categoryid) 
+FROM category C LEFT OUTER JOIN Product P
+ON C.id = P.categoryid
+GROUP BY C.id,C.name;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

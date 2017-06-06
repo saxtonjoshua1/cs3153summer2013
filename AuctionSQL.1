@@ -1,0 +1,34 @@
+
+Create Table User 
+ (
+   Username VARCHAR(10)   Primary Key,
+   Password VARCHAR(10)   UNIQUE NOT NULL,    
+   FName	VARCHAR(15),
+   MName    VARCHAR(15),
+   LName    VARCHAR(15),
+   Street   VARCHAR(20),
+   City     VARCHAR(15),
+   State    VARCHAR(15),
+   ZIP      INTEGER,
+ );
+
+Create Table AuctionItem
+(
+ Title               VARCHAR(20) Primary key,
+ Item_Description    VARCHAR(100),
+ Started_By_User     VARCHAR(10),
+ Auction_Start_time  TIMESTAMP [ (p) ] [without time zone],
+ Auction_End_time    TIMESTAMP [ (p) ] [without time zone],
+ Winning_Bid         ?????????????        
+ Belongs_To_Category REFERENCES Category(ID),
+);
+
+Create Table BidHistory
+( 
+ Item    REFERENCES AuctionItem (Title),
+ BidHistory INTEGER,
+ 
+ ????????
+ 
+ CONSTRAINT BidHistory_PK Primary Key (Item,BidHistory),
+) 

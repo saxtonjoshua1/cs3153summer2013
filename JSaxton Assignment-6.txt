@@ -1,0 +1,53 @@
+(20p) Show the id and name of all students who are minoring in any area belonging to the 'Basket Weaving and Juggling' school; Make sure each student appears only once, even if minoring in more than one area within that school.
+
+SELECT S.id, S.name COUNT(M.Area)
+FROM STUDENT S 
+JOIN Minors M ON (M.Student=S.id)
+JOIN Area A ON (M.Area = A.id)
+JOIN School SC ON (A.School=Sc.id)
+WHERE Sc.name = 'Basket Weaving and Juggling';
+
+
+(20p) show the name of each area with the number of students who are majoring on it, plus the age of the oldest student(s) majoring on it, and the average age of all students majoring on it. Make sure ALL areas appear, even those with no students majoring on it.
+
+
+SELECT A.name COUNT (M.Area)
+	FROM Area A 
+	LEFT OUTER JOIN Majors M ON (M.Area=A.Id)
+GROUP BY A.Id, A.Name
+
+
+
+(20p) Create a view, called StudentNumMinors that contains the id and name of each student, with the number of areas they are minoring on.
+
+CREATE VIEW StudentNumMinors AS
+SELECT id, name, COUNT(*)
+FROM Student  
+JOIN Minors M ON (M.area = A.name);
+
+(20p) Show the names of any students who are NOT majoring in any area belonging to the 'Computing and Software Engineering' school.
+
+SELECT Id,Name
+FROM Student 
+WHERE Id  NOT IN (
+		SELECT  M.Student
+		FROM Majors M  
+		JOIN Area A ON (M.Area=A.Id) 
+		JOIN School Sc ON (A.School=Sc.Id)
+		WHERE Sc.Name ='Computing and Software Engineering'
+)
+;
+
+
+(20p) Show The names of any students who are majoring in more than one area within the 'Computing and Software Engineering' school.
+
+SELECT S.Name
+FROM Student S 
+	JOIN Majors M ON (S.Id=M.Student)
+	JOIN Area A ON (M.Area=A.Id) 
+	JOIN School Sc ON (A.School=Sc.Id)
+WHERE Sc.Name='Computing and Software Engineering'
+GROUP BY S.Name WHERE COUNT(*) < 1;
+
+
+(EXTRA CREDIT, 10p) The name of each area, with both the number of students majoring on it and the number of students minoring on it. Areas with no students appear	with a count of 0

@@ -1,0 +1,147 @@
+
+
+
+CREATE TABLE UserInfo (
+   UserName VARCHAR(25)   Primary Key,
+   Password VARCHAR(25)   UNIQUE NOT NULL,    
+   FName    VARCHAR(20),
+   MName    VARCHAR(20),
+   LName    VARCHAR(20),
+   Street   VARCHAR(30),
+   City     VARCHAR(20),
+   State    VARCHAR(20),
+   ZIP      INTEGER,          
+   CreditCard Integer UNIQUE NOT NULL
+ );
+ 
+ /**  The folowing inserts are simply testing UserInfo data.......
+      lets start these three and manipulate/add more later once 
+      the system is working'
+ **/
+ 
+ Insert INTO UserInfo (Username,Password,FName,MName,LName,Street,City,State,ZIP,CreditCard)
+ values ('TestDummy','Password1','James','Lee','Pyle','6640 Akers Mill Rd','Atlanta','GA',30339,123456);
+ 
+ //////////////////////////////////////////////////////////////////////////////////////////////////////////
+ 
+ 
+ Create Table Category
+  (
+   CatId         INTEGER Primary key,
+   Item          VARCHAR(30),
+   Main          INTEGER REFERENCES Category(CatId)
+   );
+  
+  
+   //test insert
+   
+   
+   Insert INTO Category (CatId,Item,Main) values    (1,'Robots',default); 
+
+
+
+SELECT C.catid,C.item,C.main FROM Category C 
+JOIN Category On (C.catid=C.main) 
+GROUP BY C.catid,C.item,C.main;
+
+ 
+   
+   
+   
+ /////////////////////////////////////////////////////////////////////////////////
+ 
+
+Create Table Auction
+(
+ AuctionId          SERIAL Primary key,
+ Item               INTEGER REFERENCES Category(CatId), 
+ Description        VARCHAR(100),
+ StartTime          TIMESTAMP,     
+ EndTime            TIMESTAMP,
+ BelongsTo          INTEGER REFERENCES Category(CatId)
+);
+
+
+//test insert
+
+Insert INTO Auction(AuctionId,ItemDescription,StartTime,EndTime,BelongsTo)  
+                    values (DEFAULT,'One badly burned RobotArm!',current_timestamp,current_timestamp,1);                                                     
+
+
+
+
+CREATE VIEW ShowAuctionItems AS
+SELECT Auction.auctionid,Category.item,Auction.description,
+Auction.starttime,Auction.endtime,Auction.belongsto
+FROM Auction JOIN Category ON (Auction.item=Category.catid)
+Where Auction.Endtime>current_timestamp
+GROUP BY Auction.auctionid,Category.catid,Auction.item,Category.item,Auction.description,
+Auction.starttime,Auction.endtime,Auction.belongsto;
+
+
+
+//See if auction is still open:
+
+Select * from Auction where
+Auction.Endtime>current_timestamp;
+
+
+
+
+se
+
+
+
+
+
+
+//To see all Robot Auctions
+
+ 
+Select * From Auction
+WHERE Auctionid= $item;      //whatever user inputs
+
+
+
+Create Table BidRecord
+( 
+ BidId      Serial,
+ Price      INTEGER,
+ Time       TIMESTAMP,
+ HasAuction INTEGER REFERENCES Auction(AuctionID),
+ ForUser    VARCHAR(25) REFERENCES UserInfo(UserName) 
+); 
+
+//test insert
+
+Insert INTO BidRecord(BidId,Price,Time,HasAuction,ForUser)
+                     values(DEFAULT,100.00,current_timestamp,23,'TestDummy');
+
+
+
+//To see current bids per auction ID entered
+
+SELECT A.auctionid,B.bidid,A.description,B.price,B.foruser
+FROM Auction A JOIN BidRecord B ON (B.hasauction=A.auctionid)
+WHERE auctionid=$item
+Group BY A.auctionid,B.bidid,B.foruser,A.description,B.price;
+
+
+
+SELECT B.bidid AS,A.auctionid,B.time,A.description,B.price,B.foruser
+FROM Auction A JOIN BidRecord B ON (B.hasauction=A.auctionid)
+WHERE auctionid=26
+Group BY B.bidid,A.auctionid,B.time,A.description,B.price,B.foruser;
+
+
+
+
+VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+
+
+select foruser, price from bidrecord where hasauction = 23 and price = (select max(price) from bidrecord where hasauction = 23);
+
+
+
+
+
